@@ -43,6 +43,8 @@ android {
 }
 
 dependencies {
+    implementation(group = "", name = "heart-rate-chicken-embryos-sdk-debug", ext = "aar")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
