@@ -2,4 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.imukstudio.heartrate.chicken.embryos.sdk">
 
+    <uses-feature android:name="android.hardware.camera"
+                  android:required="true"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
 </manifest>
