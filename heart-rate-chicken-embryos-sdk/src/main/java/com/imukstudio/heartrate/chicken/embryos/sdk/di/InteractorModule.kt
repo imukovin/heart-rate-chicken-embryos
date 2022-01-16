@@ -7,5 +7,5 @@ import org.kodein.di.bindProvider
 import org.kodein.di.instance
 
 internal val interactorModule = DI.Module(name = "interactor") {
-    bindProvider<MeasureInteractor> { MeasureInteractorImpl(instance()) }
+    bindProvider<MeasureInteractor> { MeasureInteractorImpl(instance(), instance()) }
 }

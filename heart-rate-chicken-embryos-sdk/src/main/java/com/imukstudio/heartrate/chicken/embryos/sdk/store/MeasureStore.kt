@@ -1,4 +1,4 @@
-package com.imukstudio.heartrate.chicken.embryos.sdk.interfaces
+package com.imukstudio.heartrate.chicken.embryos.sdk.store
 
 import com.imukstudio.heartrate.chicken.embryos.sdk.dto.MeasureData
 import java.util.*

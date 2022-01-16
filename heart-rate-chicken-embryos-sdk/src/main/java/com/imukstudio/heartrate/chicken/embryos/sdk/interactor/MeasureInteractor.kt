@@ -8,7 +8,7 @@ interface MeasureInteractor {
 
     fun startMeasure(activity: Activity, surfaceView: Surface, textureView: TextureView)
 
-    fun subscribeMeasureResult()
+    fun subscribeMeasureResult(callback: (pulse: Int) -> Unit)
 
     fun unsubscribeMeasureResult()
 

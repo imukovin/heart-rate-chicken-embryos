@@ -6,16 +6,19 @@ import android.os.CountDownTimer
 import android.view.Surface
 import android.view.TextureView
 import com.imukstudio.heartrate.chicken.embryos.sdk.CameraService
-import com.imukstudio.heartrate.chicken.embryos.sdk.MeasureStoreImpl
+import com.imukstudio.heartrate.chicken.embryos.sdk.store.impl.MeasureStoreImpl
 import com.imukstudio.heartrate.chicken.embryos.sdk.handler.MeasureHandler
-import com.imukstudio.heartrate.chicken.embryos.sdk.interfaces.MeasureStore
+import com.imukstudio.heartrate.chicken.embryos.sdk.store.MeasureStore
+import com.imukstudio.heartrate.chicken.embryos.sdk.listeners.ListenersSDK
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.max
 
-class MeasureHandlerImpl: MeasureHandler {
+class MeasureHandlerImpl(
+    private val listenersSDK: ListenersSDK
+): MeasureHandler {
     private lateinit var cameraService: CameraService
     private var measureStore: MeasureStore = MeasureStoreImpl()
     private val valleys: MutableList<Long> = mutableListOf()
@@ -51,6 +54,7 @@ class MeasureHandlerImpl: MeasureHandler {
                         } else {
                             (60f * (detectedValleys - 1) / max(1f, (valleys[valleys.size - 1] - valleys[0]) / 1000f))
                         }
+                        listenersSDK.notifyMeasureResult(pulse = currentPulse.toInt())
                         println("Pulse: $currentPulse Detected: $detectedValleys Time: ${1f * (MEASUREMENT_LENGTH - millisUntilFinished - CLIP_LENGTH) / 1000f}")
                     }
 //            printRedPixels(measureStore.stdValues())

@@ -8,8 +8,6 @@ import android.hardware.camera2.CameraCaptureSession
 import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CaptureRequest
-import android.hardware.camera2.params.SessionConfiguration
-import android.os.Build
 import android.util.Log
 import android.view.Surface
 import androidx.core.app.ActivityCompat
@@ -22,15 +20,15 @@ class CameraService(
     private lateinit var cameraDevice: CameraDevice
 
     fun start() {
-        Log.d("HRSdk", "CameraDevice start")
+        Log.d(logTag, "CameraDevice start")
         val cameraManager = activity.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
         val cameraId = cameraManager.cameraIdList[0]
-        Log.d("HRSdk", "cameraId = $cameraId")
+        Log.d(logTag, "cameraId = $cameraId")
 
         val callback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
             override fun onOpened(camera: CameraDevice) {
-                Log.d("HRSdk", "CameraDevice onOpened")
+                Log.d(logTag, "CameraDevice onOpened")
                 cameraDevice = camera
                 val stateCallback = object : CameraCaptureSession.StateCallback() {
                     override fun onConfigured(session: CameraCaptureSession) {
@@ -42,24 +40,24 @@ class CameraService(
                     }
 
                     override fun onConfigureFailed(p0: CameraCaptureSession) {
-                        Log.e("HRSdk", "Camera session configuration failed.")
+                        Log.e(logTag, "Camera session configuration failed.")
                     }
                 }
                 cameraDevice.createCaptureSession(Collections.singletonList(surfaceView), stateCallback, null)
             }
 
             override fun onDisconnected(p0: CameraDevice) {
-                Log.d("HRSdk", "CameraDevice onDisconnected")
+                Log.d(logTag, "CameraDevice onDisconnected")
             }
 
             override fun onError(p0: CameraDevice, p1: Int) {
-                Log.d("HRSdk", "CameraDevice onError")
+                Log.d(logTag, "CameraDevice onError")
             }
 
         }
 
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            Log.e("HRSdk", "No permission for CAMERA.")
+            Log.e(logTag, "No permission for CAMERA.")
             return
         }
         cameraManager.openCamera(cameraId, callback, null)
