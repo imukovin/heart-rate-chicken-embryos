@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             REQUEST_CODE_CAMERA_PERMISSION -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    HRSdk.init(this, Surface(textureView.surfaceTexture), textureView)
+                    HRSdk.measureInteractor.startMeasure(this, Surface(textureView.surfaceTexture), textureView)
                 }
             }
         }
