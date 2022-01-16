@@ -1,7 +1,7 @@
-package com.imukstudio.heartrate.chicken.embryos.sdk
+package com.imukstudio.heartrate.chicken.embryos.sdk.store.impl
 
-import com.imukstudio.heartrate.chicken.embryos.sdk.interfaces.MeasureStore
 import com.imukstudio.heartrate.chicken.embryos.sdk.dto.MeasureData
+import com.imukstudio.heartrate.chicken.embryos.sdk.store.MeasureStore
 import java.util.Date
 import kotlin.math.max
 

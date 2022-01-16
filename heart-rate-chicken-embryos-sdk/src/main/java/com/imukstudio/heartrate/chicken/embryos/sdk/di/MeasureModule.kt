@@ -4,7 +4,8 @@ import com.imukstudio.heartrate.chicken.embryos.sdk.handler.MeasureHandler
 import com.imukstudio.heartrate.chicken.embryos.sdk.handler.impl.MeasureHandlerImpl
 import org.kodein.di.DI
 import org.kodein.di.bindProvider
+import org.kodein.di.instance
 
 internal val measureModule = DI.Module(name = "measure") {
-    bindProvider<MeasureHandler> { MeasureHandlerImpl() }
+    bindProvider<MeasureHandler> { MeasureHandlerImpl(instance()) }
 }

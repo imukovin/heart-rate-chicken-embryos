@@ -1,10 +1,10 @@
 package com.imukstudio.heartrate.chicken.embryos.sdk.di
 
-import com.imukstudio.heartrate.chicken.embryos.sdk.interactor.ListenersInteractor
-import com.imukstudio.heartrate.chicken.embryos.sdk.interactor.impl.ListenersInteractorImpl
+import com.imukstudio.heartrate.chicken.embryos.sdk.listeners.ListenersSDK
+import com.imukstudio.heartrate.chicken.embryos.sdk.listeners.ListenersSDKImpl
 import org.kodein.di.DI
-import org.kodein.di.bindProvider
+import org.kodein.di.bindSingleton
 
-internal val listenersModule = DI.Module(name = "listeners") {
-    bindProvider<ListenersInteractor> { ListenersInteractorImpl() }
+internal val listenersSDKModule = DI.Module(name = "listeners") {
+    bindSingleton<ListenersSDK> { ListenersSDKImpl() }
 }

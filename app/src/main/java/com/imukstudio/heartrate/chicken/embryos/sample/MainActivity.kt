@@ -6,18 +6,33 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Surface
 import android.view.TextureView
+import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import com.imukstudio.heartrate.chicken.embryos.sdk.HRSdk
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textureView: TextureView
+    private lateinit var pulseTextView: TextView
+
+    override fun onResume() {
+        super.onResume()
+        HRSdk.measureInteractor.subscribeMeasureResult {
+            setPulseView(value = it)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         textureView = findViewById(R.id.surface)
+        pulseTextView = findViewById(R.id.pulseTextView)
 
         requestPermissionForCamera()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        HRSdk.measureInteractor.unsubscribeMeasureResult()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -33,6 +48,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermissionForCamera() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE_CAMERA_PERMISSION)
+    }
+
+    private fun setPulseView(value: Int) {
+        pulseTextView.text = "$value"
     }
 
     companion object {

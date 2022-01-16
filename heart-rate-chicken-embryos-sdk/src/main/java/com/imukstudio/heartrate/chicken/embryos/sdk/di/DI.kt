@@ -4,7 +4,7 @@ import org.kodein.di.DI
 
 fun initDI(): DI =
     DI {
-        import(listenersModule)
+        import(listenersSDKModule)
         import(interactorModule)
         import(measureModule)
     }
