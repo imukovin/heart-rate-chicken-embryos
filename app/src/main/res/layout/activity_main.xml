@@ -117,8 +117,8 @@
                 android:layout_weight="0.33"
                 android:orientation="vertical">
             <TextView
-                    android:id="@+id/coverTitleTextView"
-                    android:text="Cover"
+                    android:id="@+id/cycleTitleTextView"
+                    android:text="Cycle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
@@ -128,7 +128,7 @@
                     app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
-                    android:id="@+id/CoverTextView"
+                    android:id="@+id/cycleTextView"
                     android:text="--"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

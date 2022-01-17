@@ -1,9 +1,9 @@
 package com.imukstudio.heartrate.chicken.embryos.sdk.listeners
 
 class ListenersSDKImpl: ListenersSDK {
-    private var callbackMeasureResult: ((pulse: Int) -> Unit)? = null
+    private var callbackMeasureResult: ((pulse: Int, cycles: Int, time: Float) -> Unit)? = null
 
-    override fun subscribeMeasureResult(callback: (pulse: Int) -> Unit) {
+    override fun subscribeMeasureResult(callback: (pulse: Int, cycles: Int, time: Float) -> Unit) {
         callbackMeasureResult = callback
     }
 
@@ -11,8 +11,8 @@ class ListenersSDKImpl: ListenersSDK {
         callbackMeasureResult = null
     }
 
-    override fun notifyMeasureResult(pulse: Int) {
-        callbackMeasureResult?.invoke(pulse)
+    override fun notifyMeasureResult(pulse: Int, cycles: Int, time: Float) {
+        callbackMeasureResult?.invoke(pulse, cycles, time)
     }
 
 }

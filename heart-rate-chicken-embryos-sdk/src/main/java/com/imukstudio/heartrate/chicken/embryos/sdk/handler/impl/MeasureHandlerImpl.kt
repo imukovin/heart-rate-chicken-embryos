@@ -54,8 +54,9 @@ class MeasureHandlerImpl(
                         } else {
                             (60f * (detectedValleys - 1) / max(1f, (valleys[valleys.size - 1] - valleys[0]) / 1000f))
                         }
-                        listenersSDK.notifyMeasureResult(pulse = currentPulse.toInt())
-                        println("Pulse: $currentPulse Detected: $detectedValleys Time: ${1f * (MEASUREMENT_LENGTH - millisUntilFinished - CLIP_LENGTH) / 1000f}")
+                        val passedTime = 1f * (MEASUREMENT_LENGTH - millisUntilFinished - CLIP_LENGTH) / 1000f
+                        listenersSDK.notifyMeasureResult(pulse = currentPulse.toInt(), cycles = detectedValleys, time = passedTime)
+                        println("Pulse: $currentPulse Detected: $detectedValleys Time: $passedTime")
                     }
 //            printRedPixels(measureStore.stdValues())
                 }
