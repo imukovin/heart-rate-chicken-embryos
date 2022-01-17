@@ -15,7 +15,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/newMeasurementButton" android:layout_marginBottom="8dp">
+            app:layout_constraintBottom_toTopOf="@+id/newMeasurementButton"
+            android:layout_marginBottom="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -61,7 +62,7 @@
                         android:orientation="vertical">
                     <TextView
                             android:id="@+id/pulseTitleTextView"
-                            android:text="Pulse"
+                            android:text="@string/pulse"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
@@ -72,7 +73,7 @@
 
                     <TextView
                             android:id="@+id/pulseTextView"
-                            android:text="--"
+                            android:text="@string/spaces"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -96,7 +97,7 @@
                         android:orientation="vertical">
                     <TextView
                             android:id="@+id/secondTitleTextView"
-                            android:text="Second"
+                            android:text="@string/second"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
@@ -107,7 +108,7 @@
 
                     <TextView
                             android:id="@+id/secondTextView"
-                            android:text="--"
+                            android:text="@string/spaces"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -131,7 +132,7 @@
                         android:orientation="vertical">
                     <TextView
                             android:id="@+id/cycleTitleTextView"
-                            android:text="Cycle"
+                            android:text="@string/cycle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
@@ -142,7 +143,7 @@
 
                     <TextView
                             android:id="@+id/cycleTextView"
-                            android:text="--"
+                            android:text="@string/spaces"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -160,7 +161,7 @@
 
     <Button
             android:id="@+id/newMeasurementButton"
-            android:text="Start"
+            android:text="@string/start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:height="60dp"
@@ -171,4 +172,5 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginBottom="16dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
