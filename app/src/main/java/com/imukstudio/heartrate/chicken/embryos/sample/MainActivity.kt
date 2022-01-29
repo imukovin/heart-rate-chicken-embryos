@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Surface
 import android.view.TextureView
+import android.widget.Button
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import com.imukstudio.heartrate.chicken.embryos.sdk.HRSdk
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var pulseTextView: TextView
     private lateinit var cycleTextView: TextView
     private lateinit var timeTextView: TextView
+    private lateinit var startMeasurementBtn: Button
 
     override fun onResume() {
         super.onResume()
@@ -30,8 +32,13 @@ class MainActivity : AppCompatActivity() {
         pulseTextView = findViewById(R.id.pulseTextView)
         cycleTextView = findViewById(R.id.cycleTextView)
         timeTextView = findViewById(R.id.secondTextView)
+        startMeasurementBtn = findViewById(R.id.newMeasurementButton)
 
         requestPermissionForCamera()
+
+        startMeasurementBtn.setOnClickListener {
+            HRSdk.measureInteractor.startMeasure(this, Surface(textureView.surfaceTexture), textureView)
+        }
     }
 
     override fun onPause() {
@@ -43,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             REQUEST_CODE_CAMERA_PERMISSION -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    HRSdk.measureInteractor.startMeasure(this, Surface(textureView.surfaceTexture), textureView)
+                    // permission granted
                 }
             }
         }
