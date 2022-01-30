@@ -16,7 +16,7 @@ class MeasureInteractorImpl(
         measureHandler.startMeasure(activity = activity, surfaceView = surfaceView, textureView = textureView)
     }
 
-    override fun subscribeMeasureResult(callback: (pulse: Int) -> Unit) {
+    override fun subscribeMeasureResult(callback: (pulse: Int, cycles: Int, time: Float) -> Unit) {
         listenersSDK.subscribeMeasureResult(callback)
     }
 

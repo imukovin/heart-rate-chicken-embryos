@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">heart-rate-chicken-embryos-android-sample</string>
+    <string name="app_name">Heart Rate Chicken Embryos</string>
+    <string name="pulse">Pulse</string>
+    <string name="second">Second</string>
+    <string name="cycle">Cycle</string>
+    <string name="start">Start</string>
+    <string name="spaces">--</string>
 </resources>

@@ -4,8 +4,8 @@ plugins {
     id("kotlin-kapt")
 }
 
-val kotlin_version = "1.5.31"
-val coroutines_version = "1.3.7"
+val kotlin_version = "1.6.10"
+val coroutines_version = "1.6.0"
 
 android {
     compileSdkVersion(30)

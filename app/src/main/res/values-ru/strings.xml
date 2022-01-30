@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Сердцебиение эмбриона</string>
+    <string name="pulse">Пульс</string>
+    <string name="second">Секунды</string>
+    <string name="cycle">Цикл</string>
+    <string name="start">Начать</string>
+    <string name="spaces">--</string>
+</resources>
