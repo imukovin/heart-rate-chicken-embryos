@@ -3,6 +3,7 @@ package com.imukstudio.heartrate.chicken.embryos.sdk.interactor
 import android.app.Activity
 import android.view.Surface
 import android.view.TextureView
+import com.imukstudio.heartrate.chicken.embryos.sdk.database.entity.MeasureResult
 
 interface MeasureInteractor {
 
@@ -12,4 +13,5 @@ interface MeasureInteractor {
 
     fun unsubscribeMeasureResult()
 
+    fun loadLastResults(): List<MeasureResult>
 }

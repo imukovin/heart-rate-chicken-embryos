@@ -12,4 +12,14 @@ interface MeasureStore {
     fun getLastStdValues(count: Int): List<MeasureData<Int>>
 
     fun getLastTimestamp(): Date
+
+    fun setCurrentPulse(currentPulse: Int)
+
+    fun setPassedTime(passedTime: Float)
+
+    fun getCurrentPulse(): Int
+
+    fun getPassedTime(): Float
+
+    fun getMeasurementValues(): List<Int>
 }

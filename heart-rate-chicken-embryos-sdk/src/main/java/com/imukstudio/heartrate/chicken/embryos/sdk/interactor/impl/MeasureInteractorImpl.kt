@@ -3,6 +3,7 @@ package com.imukstudio.heartrate.chicken.embryos.sdk.interactor.impl
 import android.app.Activity
 import android.view.Surface
 import android.view.TextureView
+import com.imukstudio.heartrate.chicken.embryos.sdk.database.entity.MeasureResult
 import com.imukstudio.heartrate.chicken.embryos.sdk.handler.MeasureHandler
 import com.imukstudio.heartrate.chicken.embryos.sdk.interactor.MeasureInteractor
 import com.imukstudio.heartrate.chicken.embryos.sdk.listeners.ListenersSDK
@@ -23,4 +24,7 @@ class MeasureInteractorImpl(
     override fun unsubscribeMeasureResult() {
         listenersSDK.unsubscribeOnPulse()
     }
+
+    override fun loadLastResults(): List<MeasureResult> =
+        measureHandler.loadLastResults()
 }

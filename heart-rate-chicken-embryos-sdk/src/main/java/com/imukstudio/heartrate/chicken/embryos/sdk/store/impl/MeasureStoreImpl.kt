@@ -7,6 +7,8 @@ import kotlin.math.max
 
 class MeasureStoreImpl: MeasureStore {
     private val measurements: MutableList<MeasureData<Int>> = mutableListOf()
+    private var currentPulse: Int = 0
+    private var passedTime: Float = 0F
     private var min = Int.MAX_VALUE
     private var max = Int.MIN_VALUE
 
@@ -42,6 +44,26 @@ class MeasureStoreImpl: MeasureStore {
 
     override fun getLastTimestamp(): Date =
         measurements[measurements.size - 1].date
+
+    override fun setCurrentPulse(currentPulse: Int) {
+        this.currentPulse = currentPulse
+    }
+
+    override fun setPassedTime(passedTime: Float) {
+        this.passedTime = passedTime
+    }
+
+    override fun getCurrentPulse(): Int = currentPulse
+
+    override fun getPassedTime(): Float = passedTime
+
+    override fun getMeasurementValues(): List<Int> {
+        val list = mutableListOf<Int>()
+        measurements.forEach {
+            list.add(it.measurement)
+        }
+        return list
+    }
 
     companion object {
         private const val rollingAverageSize = 4

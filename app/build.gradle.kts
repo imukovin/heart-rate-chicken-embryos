@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("kotlin-kapt")
+    kotlin("kapt")
+    id("realm-android")
 }
 
 val kotlin_version = "1.6.10"
@@ -13,12 +14,16 @@ android {
 
     defaultConfig {
         applicationId = "com.imukstudio.heartrate.chicken.embryos.sample"
-        minSdkVersion(21)
+        minSdkVersion(24)
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {

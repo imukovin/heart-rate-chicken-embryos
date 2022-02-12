@@ -6,18 +6,22 @@ import android.os.CountDownTimer
 import android.view.Surface
 import android.view.TextureView
 import com.imukstudio.heartrate.chicken.embryos.sdk.CameraService
+import com.imukstudio.heartrate.chicken.embryos.sdk.database.entity.MeasureResult
 import com.imukstudio.heartrate.chicken.embryos.sdk.store.impl.MeasureStoreImpl
 import com.imukstudio.heartrate.chicken.embryos.sdk.handler.MeasureHandler
 import com.imukstudio.heartrate.chicken.embryos.sdk.store.MeasureStore
 import com.imukstudio.heartrate.chicken.embryos.sdk.listeners.ListenersSDK
+import io.realm.Realm
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.math.ceil
 import kotlin.math.max
 
 class MeasureHandlerImpl(
-    private val listenersSDK: ListenersSDK
+    private val listenersSDK: ListenersSDK,
+    private val database: Realm
 ): MeasureHandler {
     private lateinit var cameraService: CameraService
     private var measureStore: MeasureStore = MeasureStoreImpl()
@@ -56,6 +60,8 @@ class MeasureHandlerImpl(
                         }
                         val passedTime = 1f * (MEASUREMENT_LENGTH - millisUntilFinished - CLIP_LENGTH) / 1000f
                         listenersSDK.notifyMeasureResult(pulse = currentPulse.toInt(), cycles = detectedValleys, time = passedTime)
+                        measureStore.setPassedTime(passedTime = passedTime)
+                        measureStore.setCurrentPulse(currentPulse = currentPulse.toInt())
                         println("Pulse: $currentPulse Detected: $detectedValleys Time: $passedTime")
                     }
 //            printRedPixels(measureStore.stdValues())
@@ -63,11 +69,15 @@ class MeasureHandlerImpl(
             }
 
             override fun onFinish() {
+                saveMeasurementResultToDB(currentMeasureStore = measureStore)
                 stopCameraService()
             }
 
         }.start()
     }
+
+    override fun loadLastResults(): List<MeasureResult> =
+        database.where(MeasureResult::class.java).findAll()
 
     private fun initCameraService(activity: Activity, surfaceView: Surface) {
         cameraService = CameraService(activity = activity, surfaceView = surfaceView)
@@ -90,6 +100,17 @@ class MeasureHandlerImpl(
                 if (measureData.measurement < referenceValue) return false
             }
             return subList[ceil(valleyDetectionWindowSize / 2f).toInt()].measurement != subList[ceil(valleyDetectionWindowSize / 2f).toInt() - 1].measurement
+        }
+    }
+
+    private fun saveMeasurementResultToDB(currentMeasureStore: MeasureStore) {
+        val measureResult = MeasureResult()
+        measureResult.pulse = currentMeasureStore.getCurrentPulse()
+        measureResult.passedTime = currentMeasureStore.getPassedTime()
+        measureResult.date = System.currentTimeMillis()
+//        measureResult.measureData = currentMeasureStore.getMeasurementValues()
+        database.executeTransactionAsync { transaction ->
+            transaction.insert(measureResult)
         }
     }
     
