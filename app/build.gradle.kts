@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
-    id("kotlin-kapt")
+    kotlin("kapt")
+    id("realm-android")
 }
 
 val kotlin_version = "1.6.10"
@@ -13,12 +14,16 @@ android {
 
     defaultConfig {
         applicationId = "com.imukstudio.heartrate.chicken.embryos.sample"
-        minSdkVersion(21)
+        minSdkVersion(24)
         targetSdkVersion(30)
         versionCode = 1
         versionName = "1.0"
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     buildTypes {
@@ -50,6 +55,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("org.kodein.di:kodein-di:7.10.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("com.google.android.material:material:1.4.0")

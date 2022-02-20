@@ -4,46 +4,30 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Surface
-import android.view.TextureView
-import android.widget.Button
-import android.widget.TextView
 import androidx.core.app.ActivityCompat
-import com.imukstudio.heartrate.chicken.embryos.sdk.HRSdk
+import com.google.android.material.navigation.NavigationBarView
+import com.imukstudio.heartrate.chicken.embryos.sample.fragments.JournalFragment
+import com.imukstudio.heartrate.chicken.embryos.sample.fragments.MainFragment
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var textureView: TextureView
-    private lateinit var pulseTextView: TextView
-    private lateinit var cycleTextView: TextView
-    private lateinit var timeTextView: TextView
-    private lateinit var startMeasurementBtn: Button
-
-    override fun onResume() {
-        super.onResume()
-        HRSdk.measureInteractor.subscribeMeasureResult { pulse, cycle, time ->
-            setMeasurementResultView(pulseValue = pulse, cycleValue = cycle, timeValue = time)
-        }
-    }
+    private lateinit var bottomNavigation: NavigationBarView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        textureView = findViewById(R.id.surface)
-        pulseTextView = findViewById(R.id.pulseTextView)
-        cycleTextView = findViewById(R.id.cycleTextView)
-        timeTextView = findViewById(R.id.secondTextView)
-        startMeasurementBtn = findViewById(R.id.newMeasurementButton)
 
         requestPermissionForCamera()
+        supportFragmentManager.beginTransaction().add(R.id.mainFrame, MainFragment(), "mainFragment").commit()
 
-        startMeasurementBtn.setOnClickListener {
-            HRSdk.measureInteractor.startMeasure(this, Surface(textureView.surfaceTexture), textureView)
+        bottomNavigation = findViewById(R.id.bottomNavigation)
+        bottomNavigation.setOnItemSelectedListener {  menuItem ->
+            when (menuItem.itemId) {
+                R.id.page1 -> supportFragmentManager.beginTransaction().replace(R.id.mainFrame, MainFragment(), "mainFragment").commit()
+                R.id.page2 -> supportFragmentManager.beginTransaction().replace(R.id.mainFrame, JournalFragment(), "keyScreen").commit()
+            }
+            return@setOnItemSelectedListener true
         }
-    }
 
-    override fun onPause() {
-        super.onPause()
-        HRSdk.measureInteractor.unsubscribeMeasureResult()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -59,12 +43,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermissionForCamera() {
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), REQUEST_CODE_CAMERA_PERMISSION)
-    }
-
-    private fun setMeasurementResultView(pulseValue: Int, cycleValue: Int, timeValue: Float) {
-        pulseTextView.text = "$pulseValue"
-        cycleTextView.text = "$cycleValue"
-        timeTextView.text = "$timeValue"
     }
 
     companion object {

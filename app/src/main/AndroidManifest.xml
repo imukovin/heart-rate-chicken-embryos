@@ -3,6 +3,7 @@
           package="com.imukstudio.heartrate.chicken.embryos.sample">
 
     <application
+            android:name=".HRApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"

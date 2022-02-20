@@ -7,5 +7,5 @@ import org.kodein.di.bindProvider
 import org.kodein.di.instance
 
 internal val measureModule = DI.Module(name = "measure") {
-    bindProvider<MeasureHandler> { MeasureHandlerImpl(instance()) }
+    bindProvider<MeasureHandler> { MeasureHandlerImpl(instance(), instance()) }
 }
