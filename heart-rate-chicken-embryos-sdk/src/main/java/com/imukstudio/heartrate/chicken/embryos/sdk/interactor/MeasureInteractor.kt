@@ -9,7 +9,7 @@ interface MeasureInteractor {
 
     fun startMeasure(activity: Activity, surfaceView: Surface, textureView: TextureView)
 
-    fun subscribeMeasureResult(callback: (pulse: Int, cycles: Int, time: Float) -> Unit)
+    fun subscribeMeasureResult(callback: (pulse: Int, cycles: Int, time: Long) -> Unit)
 
     fun unsubscribeMeasureResult()
 

@@ -7,4 +7,6 @@
     <string name="spaces">--</string>
     <string name="mainMenu">Main</string>
     <string name="journalMenu">Journal</string>
+    <string name="date">Date</string>
+    <string name="measureTime">Measure time (sec)</string>
 </resources>

@@ -22,4 +22,8 @@ interface MeasureStore {
     fun getPassedTime(): Float
 
     fun getMeasurementValues(): List<Int>
+
+    fun getMeasurementSize(): Int
+
+    fun clearStore()
 }

@@ -44,7 +44,7 @@ class MainFragment: Fragment() {
         HRApplication.hrSdk.measureInteractor.unsubscribeMeasureResult()
     }
 
-    private fun setMeasurementResultView(pulseValue: Int, cycleValue: Int, timeValue: Float) {
+    private fun setMeasurementResultView(pulseValue: Int, cycleValue: Int, timeValue: Long) {
         pulseTextView.text = "$pulseValue"
         cycleTextView.text = "$cycleValue"
         timeTextView.text = "$timeValue"

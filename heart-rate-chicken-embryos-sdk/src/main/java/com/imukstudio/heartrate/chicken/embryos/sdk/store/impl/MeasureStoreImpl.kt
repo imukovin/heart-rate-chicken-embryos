@@ -65,6 +65,16 @@ class MeasureStoreImpl: MeasureStore {
         return list
     }
 
+    override fun getMeasurementSize(): Int = measurements.size
+
+    override fun clearStore() {
+        measurements.clear()
+        currentPulse = 0
+        passedTime = 0F
+        min = Int.MAX_VALUE
+        max = Int.MIN_VALUE
+    }
+
     companion object {
         private const val rollingAverageSize = 4
     }

@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.imukstudio.heartrate.chicken.embryos.sample.HRApplication
 import com.imukstudio.heartrate.chicken.embryos.sample.R
+import com.imukstudio.heartrate.chicken.embryos.sample.adapters.JournalRecyclerViewAdapter
 
 class JournalFragment: Fragment() {
 
@@ -15,9 +18,11 @@ class JournalFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        HRApplication.hrSdk.measureInteractor.loadLastResults().forEach {
-            println("--------> Id: ${it.id}; Pulse: ${it.pulse}")
-        }
+
+
+        val list = view.findViewById<RecyclerView>(R.id.journalRecyclerView)
+        list.layoutManager = LinearLayoutManager(this.requireContext())
+        list.adapter = JournalRecyclerViewAdapter(HRApplication.hrSdk.measureInteractor.loadLastResults())
     }
 
 }

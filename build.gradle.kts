@@ -1,11 +1,10 @@
-import org.jetbrains.kotlin.gradle.plugin.statistics.ReportStatisticsToElasticSearch.url
-
 buildscript {
     val kotlin_version = "1.6.10"
 
     repositories {
         mavenCentral()
         google()
+        maven(url = "https://jitpack.io")
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.2.0")
@@ -18,6 +17,7 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        maven(url = "https://jitpack.io")
         flatDir {
             dirs("libs")
         }

@@ -8,4 +8,6 @@
     <string name="spaces">--</string>
     <string name="mainMenu">Главная</string>
     <string name="journalMenu">Журнал</string>
+    <string name="date">Дата</string>
+    <string name="measureTime">Время измерения (сек)</string>
 </resources>

@@ -12,10 +12,7 @@ import com.imukstudio.heartrate.chicken.embryos.sdk.handler.MeasureHandler
 import com.imukstudio.heartrate.chicken.embryos.sdk.store.MeasureStore
 import com.imukstudio.heartrate.chicken.embryos.sdk.listeners.ListenersSDK
 import io.realm.Realm
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.util.*
+import io.realm.RealmList
 import kotlin.math.ceil
 import kotlin.math.max
 
@@ -31,40 +28,37 @@ class MeasureHandlerImpl(
 
     override fun startMeasure(activity: Activity, surfaceView: Surface, textureView: TextureView) {
         initCameraService(activity, surfaceView)
-        measureStore = MeasureStoreImpl()
+        measureStore.clearStore()
+        valleys.clear()
+        ticksPassed = 0
         detectedValleys = 0
 
         object : CountDownTimer(MEASUREMENT_LENGTH, MEASUREMENT_INTERVAL) {
             override fun onTick(millisUntilFinished: Long) {
                 if (CLIP_LENGTH > (++ticksPassed * MEASUREMENT_INTERVAL)) return
+                val currentBitmap = textureView.bitmap!!
+                val pixelCount = currentBitmap.width * currentBitmap.height
+                val pixels = IntArray(pixelCount)
+                currentBitmap.getPixels(pixels, 0, textureView.width, 0, 0, textureView.width, textureView.height)
+                var redPixelsCount = 0
+                for (element in pixels) {
+                    redPixelsCount += element shr 16 and 0xff
+                }
+                measureStore.add(redPixelsCount)
 
-                CoroutineScope(Dispatchers.Main).launch {
-                    val currentBitmap = textureView.bitmap!!
-                    val pixelCount = currentBitmap.width * currentBitmap.height
-                    val pixels = IntArray(pixelCount)
-                    currentBitmap.getPixels(pixels, 0, textureView.width, 0, 0, textureView.width, textureView.height)
-                    var redPixelsCount = 0
-                    for (element in pixels) {
-                        redPixelsCount += element shr 16 and 0xff
+                if (detectValley()) {
+                    detectedValleys++
+                    valleys.add(measureStore.getLastTimestamp().time)
+
+                    val currentPulse = if (valleys.size == 1) {
+                        (60f * detectedValleys / max(1f, (MEASUREMENT_LENGTH - millisUntilFinished - CLIP_LENGTH) / 1000f))
+                    } else {
+                        (60f * (detectedValleys - 1) / max(1f, (valleys[valleys.size - 1] - valleys[0]) / 1000f))
                     }
-                    measureStore.add(redPixelsCount)
-
-                    if (detectValley()) {
-                        detectedValleys++
-                        valleys.add(measureStore.getLastTimestamp().time)
-
-                        val currentPulse = if (valleys.size == 1) {
-                            (60f * detectedValleys / max(1f, (MEASUREMENT_LENGTH - millisUntilFinished - CLIP_LENGTH) / 1000f))
-                        } else {
-                            (60f * (detectedValleys - 1) / max(1f, (valleys[valleys.size - 1] - valleys[0]) / 1000f))
-                        }
-                        val passedTime = 1f * (MEASUREMENT_LENGTH - millisUntilFinished - CLIP_LENGTH) / 1000f
-                        listenersSDK.notifyMeasureResult(pulse = currentPulse.toInt(), cycles = detectedValleys, time = passedTime)
-                        measureStore.setPassedTime(passedTime = passedTime)
-                        measureStore.setCurrentPulse(currentPulse = currentPulse.toInt())
-                        println("Pulse: $currentPulse Detected: $detectedValleys Time: $passedTime")
-                    }
-//            printRedPixels(measureStore.stdValues())
+                    val passedTime = 1f * (MEASUREMENT_LENGTH - millisUntilFinished - CLIP_LENGTH) / 1000f
+                    listenersSDK.notifyMeasureResult(pulse = currentPulse.toInt(), cycles = detectedValleys, time = (MEASUREMENT_LENGTH - millisUntilFinished) / 1000)
+                    measureStore.setPassedTime(passedTime = passedTime)
+                    measureStore.setCurrentPulse(currentPulse = currentPulse.toInt())
                 }
             }
 
@@ -108,15 +102,23 @@ class MeasureHandlerImpl(
         measureResult.pulse = currentMeasureStore.getCurrentPulse()
         measureResult.passedTime = currentMeasureStore.getPassedTime()
         measureResult.date = System.currentTimeMillis()
-//        measureResult.measureData = currentMeasureStore.getMeasurementValues()
+        measureResult.measureData = castListToRealmList(currentMeasureStore.getMeasurementValues())
         database.executeTransactionAsync { transaction ->
             transaction.insert(measureResult)
         }
     }
+
+    private fun castListToRealmList(arrayList: List<Int>): RealmList<Int> {
+        val realmList = RealmList<Int>()
+        arrayList.forEach {
+            realmList.add(it)
+        }
+        return realmList
+    }
     
     companion object {
-        private const val MEASUREMENT_INTERVAL: Long = 45
-        private const val MEASUREMENT_LENGTH: Long = 15000
+        private const val MEASUREMENT_INTERVAL: Long = 50
+        private const val MEASUREMENT_LENGTH: Long = 25050
         private const val CLIP_LENGTH = 3500
     }
 }
