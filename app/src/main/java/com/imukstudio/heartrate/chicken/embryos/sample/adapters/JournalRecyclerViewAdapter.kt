@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.animation.Easing
@@ -19,7 +20,8 @@ import java.util.Date
 import kotlin.collections.ArrayList
 
 class JournalRecyclerViewAdapter(
-    private val measurements: List<MeasureResult>
+    private val measurements: List<MeasureResult>,
+    private val onDeleteClickListener: OnDeleteClickListener
 ): RecyclerView.Adapter<JournalRecyclerViewAdapter.MyViewHolder>() {
     @SuppressLint("SimpleDateFormat")
     private val dateFormatter = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
@@ -29,6 +31,7 @@ class JournalRecyclerViewAdapter(
         val pulse = itemView.findViewById<TextView>(R.id.cardViewPulse)
         val measureTime = itemView.findViewById<TextView>(R.id.cardViewMeasureTime)
         val lineChart = itemView.findViewById<LineChart>(R.id.cardViewLineChart)
+        val delete = itemView.findViewById<ImageView>(R.id.deleteElementJournal)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -40,6 +43,9 @@ class JournalRecyclerViewAdapter(
         holder.date.text = dateFormatter.format(Date(measurements[position].date))
         holder.pulse.text = measurements[position].pulse.toString()
         holder.measureTime.text = measurements[position].passedTime.toString()
+        holder.delete.setOnClickListener {
+            onDeleteClickListener.deleteIconClick(measurements[position])
+        }
 
         val entries = ArrayList<Entry>()
         var a = 0
@@ -84,4 +90,8 @@ class JournalRecyclerViewAdapter(
         xAxis.labelRotationAngle = +90f
 
     }
+}
+
+interface OnDeleteClickListener {
+    fun deleteIconClick(element: MeasureResult)
 }

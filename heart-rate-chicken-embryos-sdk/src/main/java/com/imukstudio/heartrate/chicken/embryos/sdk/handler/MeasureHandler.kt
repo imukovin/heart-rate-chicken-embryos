@@ -11,4 +11,6 @@ interface MeasureHandler {
 
     fun loadLastResults(): List<MeasureResult>
 
+    fun deleteMeasurementResultFromDB(element: MeasureResult)
+
 }

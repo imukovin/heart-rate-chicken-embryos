@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener {  menuItem ->
             when (menuItem.itemId) {
                 R.id.page1 -> supportFragmentManager.beginTransaction().replace(R.id.mainFrame, MainFragment(), "mainFragment").commit()
-                R.id.page2 -> supportFragmentManager.beginTransaction().replace(R.id.mainFrame, JournalFragment(), "keyScreen").commit()
+                R.id.page2 -> supportFragmentManager.beginTransaction().replace(R.id.mainFrame, JournalFragment.newInstance(), "journalFragment").commit()
             }
             return@setOnItemSelectedListener true
         }

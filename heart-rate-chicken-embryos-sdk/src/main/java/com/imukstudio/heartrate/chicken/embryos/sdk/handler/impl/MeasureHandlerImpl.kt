@@ -7,14 +7,18 @@ import android.view.Surface
 import android.view.TextureView
 import com.imukstudio.heartrate.chicken.embryos.sdk.CameraService
 import com.imukstudio.heartrate.chicken.embryos.sdk.database.entity.MeasureResult
-import com.imukstudio.heartrate.chicken.embryos.sdk.store.impl.MeasureStoreImpl
 import com.imukstudio.heartrate.chicken.embryos.sdk.handler.MeasureHandler
-import com.imukstudio.heartrate.chicken.embryos.sdk.store.MeasureStore
 import com.imukstudio.heartrate.chicken.embryos.sdk.listeners.ListenersSDK
+import com.imukstudio.heartrate.chicken.embryos.sdk.store.MeasureStore
+import com.imukstudio.heartrate.chicken.embryos.sdk.store.impl.MeasureStoreImpl
 import io.realm.Realm
 import io.realm.RealmList
+import io.realm.RealmResults
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.max
+
 
 class MeasureHandlerImpl(
     private val listenersSDK: ListenersSDK,
@@ -94,6 +98,16 @@ class MeasureHandlerImpl(
                 if (measureData.measurement < referenceValue) return false
             }
             return subList[ceil(valleyDetectionWindowSize / 2f).toInt()].measurement != subList[ceil(valleyDetectionWindowSize / 2f).toInt() - 1].measurement
+        }
+    }
+
+    override fun deleteMeasurementResultFromDB(element: MeasureResult) {
+        MainScope().launch {
+            // Solve problem with run on ui thread
+            val result: RealmResults<MeasureResult> = database.where(MeasureResult::class.java).equalTo("id", element.id).findAll()
+            database.executeTransaction {
+                result.deleteAllFromRealm()
+            }
         }
     }
 
